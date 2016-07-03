@@ -1,0 +1,10 @@
+[package]
+name = "ipfs"
+version = "0.1.0"
+authors = ["Wim Looman <wim@nemo157.com>"]
+
+[dependencies]
+
+multiaddr = { path = "../multiaddr" }
+multihash = { path = "../multihash" }
+libp2p = { path = "../libp2p" }
