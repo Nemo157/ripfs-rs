@@ -1,9 +1,6 @@
 extern crate multiaddr;
 extern crate libp2p;
 
-use std::env;
-use std::fs::File;
-use std::io::Read;
 use std::str::FromStr;
 use multiaddr::MultiAddr;
 use libp2p::{ PeerInfo, Swarm };
