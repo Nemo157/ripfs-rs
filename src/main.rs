@@ -1,9 +1,13 @@
 extern crate multiaddr;
 extern crate libp2p;
 
+use std::env;
+use std::fs::File;
+use std::io::Read;
 use std::str::FromStr;
 use multiaddr::MultiAddr;
 use libp2p::{ PeerInfo, Swarm };
+use libp2p::identity::HostId;
 use libp2p::tcp::TcpTransport;
 
 const BOOTSTRAP_ADDRESSES: &'static [&'static str; 2] = &[
@@ -19,15 +23,25 @@ const BOOTSTRAP_ADDRESSES: &'static [&'static str; 2] = &[
 ];
 
 fn main() {
+    let host_id = HostId::from_der(
+        include_bytes!("private_key.der").as_ref().to_owned(),
+        include_bytes!("public_key.der").as_ref().to_owned()).unwrap();
+
     let bootstrap_peers = BOOTSTRAP_ADDRESSES
         .into_iter()
         .map(|addr| MultiAddr::from_str(addr).unwrap())
         .map(|addr| PeerInfo::from_addr(addr).unwrap())
         .collect::<Vec<_>>();
     println!("{:?}", bootstrap_peers);
-    let mut swarm = Swarm::new();
-    swarm.add_transport(TcpTransport::new());
-    swarm.add_peers(bootstrap_peers);
+
+    let mut swarm = {
+        let mut swarm = Swarm::new(host_id);
+        swarm.add_transport(TcpTransport::new());
+        swarm.add_peers(bootstrap_peers);
+        swarm
+    };
+
+    println!("{:?}", swarm);
     println!("{:?}", swarm.pre_connect_all());
     println!("{:?}", swarm);
 }
