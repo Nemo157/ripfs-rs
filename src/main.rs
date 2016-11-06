@@ -1,8 +1,8 @@
-extern crate multiaddr;
+extern crate maddr;
 extern crate libp2p;
 
 use std::str::FromStr;
-use multiaddr::MultiAddr;
+use maddr::MultiAddr;
 use libp2p::{ PeerInfo, Swarm };
 use libp2p::identity::HostId;
 use libp2p::tcp::TcpTransport;

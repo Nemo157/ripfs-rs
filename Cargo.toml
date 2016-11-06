@@ -5,6 +5,6 @@ authors = ["Wim Looman <wim@nemo157.com>"]
 
 [dependencies]
 
-multiaddr = { path = "../multiaddr" }
-multihash = { path = "../multihash" }
+maddr = "*"
+mhash = "*"
 libp2p = { path = "../libp2p" }
