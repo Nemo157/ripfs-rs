@@ -7,3 +7,5 @@ authors = ["Wim Looman <wim@nemo157.com>"]
 maddr = "0.2.0"
 mhash = "0.2.0"
 libp2p = { path = "../libp2p-rs" }
+futures = "*"
+tokio-core = "*"

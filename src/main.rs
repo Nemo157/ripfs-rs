@@ -1,14 +1,18 @@
 extern crate maddr;
 extern crate libp2p;
+extern crate futures;
+extern crate tokio_core;
 
 use std::str::FromStr;
 use maddr::MultiAddr;
 use libp2p::{ PeerInfo, Swarm };
 use libp2p::identity::HostId;
+use tokio_core::reactor::Core;
+use futures::future;
 
 const BOOTSTRAP_ADDRESSES: &'static [&'static str] = &[
-    "/ip4/127.0.0.1/tcp/4001/ipfs/QmWvTFC6c7Lq54wXnQV57deFfLp7TAfaDpCSWZnwbRUEVM",
-    "/ip4/104.131.131.82/tcp/4001/ipfs/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ",
+    "/ip4/127.0.0.1/tcp/4001/ipfs/QmcD3Pzo3kwvuZYNcxwEbefhmhR8s2ftd7zMkAWBwMhjax",
+    // "/ip4/104.131.131.82/tcp/4001/ipfs/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ",
     /*
     "/ip4/104.236.176.52/tcp/4001/ipfs/QmSoLnSGccFuZQJzRadHn95W2CrSFmZuTdDWP8HXaHca9z",
     "/ip4/104.236.179.241/tcp/4001/ipfs/QmSoLPppuBtQSGwKDZT2M73ULpjvfd3aZ6ha4oFGL1KrGM",
@@ -37,13 +41,14 @@ fn main() {
         .collect::<Vec<_>>();
     println!("{:?}", bootstrap_peers);
 
+    let mut core = Core::new().unwrap();
+
     let mut swarm = {
-        let mut swarm = Swarm::new(host_id, true);
-        swarm.add_peers(bootstrap_peers);
+        let mut swarm = Swarm::new(host_id, true, core.handle());
+        core.run(swarm.add_peers(bootstrap_peers)).unwrap();
         swarm
     };
 
-    println!("{:?}", swarm);
-    println!("{:?}", swarm.pre_connect_all());
-    println!("{:?}", swarm);
+    println!("{:?}", core.run(swarm.pre_connect_all()));
+    core.run(future::empty::<(), ()>()).unwrap();
 }
