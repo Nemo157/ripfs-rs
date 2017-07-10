@@ -9,6 +9,7 @@ use libp2p::{ PeerInfo, Swarm };
 use libp2p::identity::HostId;
 use tokio_core::reactor::Core;
 use futures::future;
+use libp2p::identity::PeerId;
 
 const BOOTSTRAP_ADDRESSES: &'static [&'static str] = &[
     "/ip4/127.0.0.1/tcp/4001/ipfs/QmcD3Pzo3kwvuZYNcxwEbefhmhR8s2ftd7zMkAWBwMhjax",
@@ -34,6 +35,8 @@ fn main() {
         include_bytes!("private_key.der").as_ref().to_owned(),
         include_bytes!("public_key.der").as_ref().to_owned()).unwrap();
 
+    println!("host: {:?}", host_id);
+
     let bootstrap_peers = BOOTSTRAP_ADDRESSES
         .into_iter()
         .map(|addr| MultiAddr::from_str(addr).unwrap())
@@ -50,5 +53,7 @@ fn main() {
     };
 
     println!("{:?}", core.run(swarm.pre_connect_all()));
+    let id = PeerId::from_hash("QmcD3Pzo3kwvuZYNcxwEbefhmhR8s2ftd7zMkAWBwMhjax".parse().unwrap());
+    println!("{:?}", core.run(swarm.open_stream(id, "")));
     core.run(future::empty::<(), ()>()).unwrap();
 }
