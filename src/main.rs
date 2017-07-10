@@ -8,7 +8,7 @@ use maddr::MultiAddr;
 use libp2p::{ PeerInfo, Swarm };
 use libp2p::identity::HostId;
 use tokio_core::reactor::Core;
-use futures::future;
+use futures::{future, Future};
 use libp2p::identity::PeerId;
 
 const BOOTSTRAP_ADDRESSES: &'static [&'static str] = &[
@@ -52,8 +52,9 @@ fn main() {
         swarm
     };
 
+    core.handle().spawn(swarm.clone().map_err(|err| println!("Swarm error {:?}", err)));
     println!("{:?}", core.run(swarm.pre_connect_all()));
     let id = PeerId::from_hash("QmcD3Pzo3kwvuZYNcxwEbefhmhR8s2ftd7zMkAWBwMhjax".parse().unwrap());
-    println!("{:?}", core.run(swarm.open_stream(id, "")));
+    println!("{:?}", core.run(swarm.open_stream(id, b"/ipfs/ping/1.0.0")));
     core.run(future::empty::<(), ()>()).unwrap();
 }
