@@ -8,7 +8,7 @@ use maddr::MultiAddr;
 use libp2p::{ PeerInfo, Swarm };
 use libp2p::identity::HostId;
 use tokio_core::reactor::Core;
-use futures::{future, Future};
+use futures::{Future, Sink, Stream};
 use libp2p::identity::PeerId;
 
 const BOOTSTRAP_ADDRESSES: &'static [&'static str] = &[
@@ -45,6 +45,7 @@ fn main() {
     println!("{:?}", bootstrap_peers);
 
     let mut core = Core::new().unwrap();
+    let handle = core.handle();
 
     let mut swarm = {
         let mut swarm = Swarm::new(host_id, true, core.handle());
@@ -52,9 +53,13 @@ fn main() {
         swarm
     };
 
-    core.handle().spawn(swarm.clone().map_err(|err| println!("Swarm error {:?}", err)));
+    handle.spawn(swarm.clone().map_err(|err| println!("Swarm error {:?}", err)));
     println!("{:?}", core.run(swarm.pre_connect_all()));
     let id = PeerId::from_hash("QmcD3Pzo3kwvuZYNcxwEbefhmhR8s2ftd7zMkAWBwMhjax".parse().unwrap());
-    println!("{:?}", core.run(swarm.open_stream(id, b"/ipfs/ping/1.0.0")));
-    core.run(future::empty::<(), ()>()).unwrap();
+    let stream = core.run(swarm.open_stream(id, b"/ipfs/ping/1.0.0")).unwrap();
+    println!("{:?}", stream);
+    // 32 bytes for ping service
+    let stream = core.run(stream.send(b"1234567890ABCDEF1234567890ABCDEF".to_vec())).unwrap();
+    let (result, stream) = core.run(stream.into_future()).unwrap();
+    println!("result {:?}", result.map(String::from_utf8));
 }
