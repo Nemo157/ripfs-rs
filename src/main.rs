@@ -59,7 +59,7 @@ fn main() {
     let stream = core.run(swarm.open_stream(id, b"/ipfs/ping/1.0.0")).unwrap();
     println!("{:?}", stream);
     // 32 bytes for ping service
-    let stream = core.run(stream.send(b"1234567890ABCDEF1234567890ABCDEF".to_vec())).unwrap();
+    let stream = core.run(stream.send(b"1234567890ABCDEF1234567890ABCDEF"[..].into())).unwrap();
     let (result, stream) = core.run(stream.into_future()).unwrap();
-    println!("result {:?}", result.map(String::from_utf8));
+    println!("result {:?}", result.map(|b| String::from_utf8(b.to_vec())));
 }
