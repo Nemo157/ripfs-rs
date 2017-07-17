@@ -1,11 +1,17 @@
 [package]
+authors = ["Wim Looman <wim@nemo157.com>"]
 name = "ripfs"
 version = "0.1.0"
-authors = ["Wim Looman <wim@nemo157.com>"]
 
 [dependencies]
+futures = "*"
 maddr = "0.2.0"
 mhash = "0.2.0"
-libp2p = { path = "../libp2p-rs" }
-futures = "*"
 tokio-core = "*"
+tokio-io = "0.1.2"
+
+[dependencies.libp2p]
+path = "../libp2p-rs"
+
+[dependencies.msgio]
+path = "../msgio-rs"
