@@ -4,6 +4,7 @@ name = "ripfs"
 version = "0.1.0"
 
 [dependencies]
+bytes = "0.4.4"
 futures = "*"
 maddr = "0.2.0"
 mhash = "0.2.0"

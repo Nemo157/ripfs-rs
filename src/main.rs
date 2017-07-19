@@ -4,6 +4,9 @@ extern crate futures;
 extern crate tokio_core;
 extern crate tokio_io;
 extern crate msgio;
+extern crate bytes;
+
+mod identity;
 
 use std::str::FromStr;
 use maddr::MultiAddr;
@@ -13,6 +16,8 @@ use tokio_core::reactor::Core;
 use futures::{Future, Sink, Stream};
 use libp2p::identity::PeerId;
 use tokio_io::codec::Framed;
+
+use identity::Identity;
 
 const BOOTSTRAP_ADDRESSES: &'static [&'static str] = &[
     "/ip4/127.0.0.1/tcp/4001/ipfs/QmcD3Pzo3kwvuZYNcxwEbefhmhR8s2ftd7zMkAWBwMhjax",
@@ -60,7 +65,7 @@ fn main() {
     println!("{:?}", core.run(swarm.pre_connect_all()));
     let id = PeerId::from_hash("QmcD3Pzo3kwvuZYNcxwEbefhmhR8s2ftd7zMkAWBwMhjax".parse().unwrap());
     let parts = core.run(swarm.open_stream(id, b"/ipfs/ping/1.0.0")).unwrap();
-    let stream = Framed::from_parts(parts, msgio::Identity);
+    let stream = Framed::from_parts(parts, Identity);
     println!("{:?}", stream);
     // 32 bytes for ping service
     let stream = core.run(stream.send(b"1234567890ABCDEF1234567890ABCDEF"[..].into())).unwrap();
