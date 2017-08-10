@@ -48,16 +48,16 @@ fn main() {
     if arg == Some("listen".to_owned()) {
         let addr = MultiAddr::from_str("/ip4/127.0.0.1/tcp/4002").unwrap();
         println!("listening at: {}", addr.clone() + Segment::Ipfs(host.hash().clone()));
-        let swarm = Swarm::new(host, &[addr], core.handle()).unwrap();
+        let swarm = Swarm::new(host, "ripfs/0.0.0".to_owned(), vec![addr], core.handle()).unwrap();
         println!("result: {:?}", core.run(swarm));
     } else if arg == Some("self".to_owned()) {
-        let swarm = Swarm::new(host, &[], core.handle()).unwrap();
+        let swarm = Swarm::new(host, "ripfs/0.0.0".to_owned(), vec![], core.handle()).unwrap();
         core.handle().spawn(swarm.clone().map_err(|err| println!("Swarm error {:?}", err)));
         let addr = MultiAddr::from_str("/ip4/127.0.0.1/tcp/4002/ipfs/QmdxDB3FVu9JoUtSgaVTaCQpswH7ghfRsM3wGYWFSqW7Gb").unwrap();
         let peer = PeerInfo::from_addr(addr).unwrap();
         ping(core, swarm, peer);
     } else {
-        let swarm = Swarm::new(host, &[], core.handle()).unwrap();
+        let swarm = Swarm::new(host, "ripfs/0.0.0".to_owned(), vec![], core.handle()).unwrap();
         core.handle().spawn(swarm.clone().map_err(|err| println!("Swarm error {:?}", err)));
         let addr = MultiAddr::from_str("/ip4/127.0.0.1/tcp/4001/ipfs/QmcD3Pzo3kwvuZYNcxwEbefhmhR8s2ftd7zMkAWBwMhjax").unwrap();
         let peer = PeerInfo::from_addr(addr).unwrap();
