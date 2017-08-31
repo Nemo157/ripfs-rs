@@ -1,0 +1,33 @@
+[submodule "bs58-rs"]
+	path = bs58-rs
+	url = https://github.com/Nemo157/bs58-rs
+[submodule "libp2p-crypto-rs"]
+	path = libp2p-crypto-rs
+	url = https://github.com/Nemo157/libp2p-crypto-rs
+[submodule "libp2p-identity-rs"]
+	path = libp2p-identity-rs
+	url = https://github.com/Nemo157/libp2p-identity-rs
+[submodule "libp2p-rs"]
+	path = libp2p-rs
+	url = https://github.com/Nemo157/libp2p-rs
+[submodule "libp2p-secio-rs"]
+	path = libp2p-secio-rs
+	url = https://github.com/Nemo157/libp2p-secio-rs
+[submodule "maddr-rs"]
+	path = maddr-rs
+	url = https://github.com/Nemo157/maddr-rs
+[submodule "mhash-rs"]
+	path = mhash-rs
+	url = https://github.com/Nemo157/mhash-rs
+[submodule "mplex-rs"]
+	path = mplex-rs
+	url = https://github.com/Nemo157/mplex-rs
+[submodule "msgio-rs"]
+	path = msgio-rs
+	url = https://github.com/Nemo157/msgio-rs
+[submodule "multistream-rs"]
+	path = multistream-rs
+	url = https://github.com/Nemo157/multistream-rs
+[submodule "varmint-rs"]
+	path = varmint-rs
+	url = https://github.com/Nemo157/varmint-rs

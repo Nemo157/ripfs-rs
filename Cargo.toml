@@ -12,7 +12,25 @@ tokio-core = "*"
 tokio-io = "0.1.2"
 
 [dependencies.libp2p]
-path = "../libp2p-rs"
+path = "libp2p-rs"
 
 [dependencies.msgio]
-path = "../msgio-rs"
+path = "msgio-rs"
+
+[workspace]
+members = [
+  "bs58-rs",
+  "libp2p-crypto-rs",
+  "libp2p-identity-rs",
+  "libp2p-rs",
+  "libp2p-secio-rs",
+  "maddr-rs",
+  "mhash-rs",
+  "mplex-rs",
+  "msgio-rs",
+  "multistream-rs",
+  "varmint-rs",
+]
+
+[replace."maddr:0.2.0"]
+path = "maddr-rs"
