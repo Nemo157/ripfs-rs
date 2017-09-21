@@ -3,7 +3,6 @@ extern crate libp2p;
 extern crate futures;
 extern crate tokio_core;
 extern crate tokio_io;
-extern crate msgio;
 extern crate bytes;
 
 mod identity;
@@ -14,7 +13,6 @@ use libp2p::{ PeerInfo, Swarm };
 use libp2p::identity::HostId;
 use tokio_core::reactor::Core;
 use futures::{Future, Sink, Stream};
-use libp2p::identity::PeerId;
 use tokio_io::codec::Framed;
 
 use identity::Identity;
@@ -33,15 +31,15 @@ fn main() {
 
     fn ping(mut core: Core, mut swarm: Swarm, peer: PeerInfo) {
         println!("going to ping {:?}", peer);
-        core.run(swarm.add_peers(vec![peer.clone()])).unwrap();
+        swarm.add_peers(vec![peer.clone()]);
         println!("added peer");
         let id = peer.id().clone();
-        let parts = core.run(swarm.open_stream(id, b"/ipfs/ping/1.0.0")).unwrap();
+        let parts = core.run(swarm.open_stream(id, "/ipfs/ping/1.0.0")).unwrap();
         println!("opened stream");
         let stream = Framed::from_parts(parts, Identity);
         let stream = core.run(stream.send(b"1234567890ABCDEF1234567890ABCDEF"[..].into())).unwrap();
         println!("sent ping");
-        let (result, stream) = core.run(stream.into_future()).unwrap();
+        let (result, _stream) = core.run(stream.into_future()).unwrap();
         println!("ping result {:?}", result.map(|b| String::from_utf8(b.to_vec())));
     }
 

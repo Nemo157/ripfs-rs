@@ -14,9 +14,6 @@ tokio-io = "0.1.2"
 [dependencies.libp2p]
 path = "libp2p-rs"
 
-[dependencies.msgio]
-path = "msgio-rs"
-
 [workspace]
 members = [
   "bs58-rs",
@@ -32,5 +29,5 @@ members = [
   "varmint-rs",
 ]
 
-[replace."maddr:0.2.0"]
-path = "maddr-rs"
+[patch.crates-io]
+maddr = { path = "maddr-rs" }
