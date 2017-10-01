@@ -1,0 +1,9 @@
+language: rust
+sudo: false
+cache: cargo
+rust:
+  - nightly-2017-09-29
+
+script:
+  - git submodule update --init --recursive
+  - cargo build
