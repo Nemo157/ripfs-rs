@@ -4,6 +4,15 @@ cache: cargo
 rust:
   - nightly-2017-09-29
 
+before_script:
+  # Taken from https://github.com/dnaq/sodiumoxide/blob/fa480ffde10050f6f6f9da40df2ae572e3684d01/.travis.yml
+  - wget https://github.com/jedisct1/libsodium/releases/download/1.0.8/libsodium-1.0.8.tar.gz
+  - tar xvfz libsodium-1.0.8.tar.gz
+  - cd libsodium-1.0.8 && ./configure --prefix=$HOME/installed_libsodium && make && make install &&
+    cd ..
+  - export PKG_CONFIG_PATH=$HOME/installed_libsodium/lib/pkgconfig:$PKG_CONFIG_PATH
+  - export LD_LIBRARY_PATH=$HOME/installed_libsodium/lib:$LD_LIBRARY_PATH
+
 script:
   - git submodule update --init --recursive
   - cargo build
