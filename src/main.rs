@@ -80,13 +80,13 @@ fn main() {
         let addr = MultiAddr::from_str("/ip4/127.0.0.1/tcp/4002/ipfs/QmdxDB3FVu9JoUtSgaVTaCQpswH7ghfRsM3wGYWFSqW7Gb").unwrap();
         let peer = PeerInfo::from_addr(addr).unwrap();
         ping(logger, &mut core, swarm, peer);
-    } else {
+    } else if let Some(addr) = arg {
         let swarm = Swarm::new(logger.clone(), host, "ripfs/0.0.0".to_owned(), vec![], core.handle()).unwrap();
         {
             let logger = logger.clone();
             core.handle().spawn(swarm.clone().map_err(move |err| info!(logger, "Swarm error {:#?}", err)));
         }
-        let addr = MultiAddr::from_str("/ip4/127.0.0.1/tcp/4001/ipfs/QmcD3Pzo3kwvuZYNcxwEbefhmhR8s2ftd7zMkAWBwMhjax").unwrap();
+        let addr = MultiAddr::from_str(&addr).unwrap();
         let peer = PeerInfo::from_addr(addr).unwrap();
         ping(logger.clone(), &mut core, swarm.clone(), peer);
         info!(logger, "Running swarm for 5 seconds");
