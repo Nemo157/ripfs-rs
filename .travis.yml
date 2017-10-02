@@ -2,7 +2,7 @@ language: rust
 sudo: false
 cache: cargo
 rust:
-  - nightly-2017-09-29
+  - nightly-2017-10-02
 
 before_script:
   # Taken from https://github.com/dnaq/sodiumoxide/blob/fa480ffde10050f6f6f9da40df2ae572e3684d01/.travis.yml
