@@ -13,9 +13,6 @@
 [submodule "libp2p-secio-rs"]
 	path = libp2p-secio-rs
 	url = https://github.com/Nemo157/libp2p-secio-rs
-[submodule "maddr-rs"]
-	path = maddr-rs
-	url = https://github.com/Nemo157/maddr-rs
 [submodule "mhash-rs"]
 	path = mhash-rs
 	url = https://github.com/Nemo157/mhash-rs
