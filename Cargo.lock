@@ -291,6 +291,7 @@ dependencies = [
  "libp2p-identity 0.1.0",
  "libp2p-secio 0.1.0",
  "maddr 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "mhash 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "mplex 0.1.0",
  "msgio 0.1.0",
  "multistream 0.1.0",
